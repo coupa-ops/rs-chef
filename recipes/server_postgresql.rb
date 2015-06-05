@@ -27,8 +27,14 @@ postgresql_database db_name do
 end
 
 execute "install_schema" do
-  command "/opt/chef-server/embedded/bin/sqitch --db-user #{postgresql_connection_info[:username]} --db-host #{postgresql_connection_info[:host]} --db-port #{postgresql_connection_info[:port]} deploy --verify" # same as preflight
-  cwd "/opt/chef-server/embedded/service/chef-server-schema"
+  command "#{node[:chef][:server][:prefix]}/embedded/bin/sqitch --db-user #{postgresql_connection_info[:username]} --db-host #{postgresql_connection_info[:host]} --db-port #{postgresql_connection_info[:port]} deploy --verify" # same as preflight
+  cwd begin
+    if Gem::Version.new(node[:chef][:server][:version]).release >= Gem::Version.new(12)
+      '/opt/opscode/embedded/service/opscode-erchef/schema'
+    else
+      '/opt/chef-server/embedded/service/chef-server-schema'
+    end
+  end
   environment({'HOME' => '/root'})
   action :nothing
 end

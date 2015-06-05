@@ -9,6 +9,10 @@
 # The Chef client configuration directory
 set[:chef][:client][:config_dir] = "/etc/chef"
 
+# The Chef server directories
+default[:chef][:server][:config_dir] = '/etc/chef-server'
+default[:chef][:server][:prefix] = '/opt/chef-server'
+
 # Recommended attributes
 default[:chef][:client][:version] = "11.12.8-2"
 default[:chef][:client][:environment] = "_default"

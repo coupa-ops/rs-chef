@@ -1,3 +1,10 @@
+# Override some attributes
+#
+if Gem::Version.new(node[:chef][:server][:version]).release >= Gem::Version.new(12)
+  node.normal[:chef][:server][:config_dir] = '/etc/opscode'
+  node.normal[:chef][:server][:prefix] = '/opt/opscode'
+end
+
 #
 # Install AWS SDK and DnsMadeEasy gems for Ruby
 #
@@ -69,7 +76,7 @@ directory "/etc/coupa/patches" do
 end
 
 remote_directory "/etc/coupa/patches" do
-  source "etc/coupa/patches"
+  source "etc/coupa/patches/chef#{Gem::Version.new(node[:chef][:server][:version]).segments.first}"
 end
 
 file "/etc/coupa/patches/apply.sh" do
@@ -84,8 +91,8 @@ file "/etc/coupa/patches/apply.sh" do
 end
 
 execute "Apply Coupa patches for chef server" do
-  command "/etc/coupa/patches/apply.sh"
-  returns [1, 0]
+  command "/etc/coupa/patches/apply.sh && touch /etc/coupa/patches/apply.sh.done"
+  creates '/etc/coupa/patches/apply.sh.done'
 end
 
 cookbook_file "/etc/logrotate.d/chef-server" do
@@ -105,14 +112,14 @@ include_recipe "rs-chef::server_postgresql"
 # Configure chef server
 #
 
-directory "/etc/chef-server"
+directory node[:chef][:server][:config_dir]
 
-file "/etc/chef-server/chef-validator.pem" do
+file "#{node[:chef][:server][:config_dir]}/chef-validator.pem" do
   mode 0600
   content node[:chef][:client][:validator_pem]
 end
 
-file "/etc/chef-server/chef-webui.pem" do
+file "#{node[:chef][:server][:config_dir]}/chef-webui.pem" do
   mode 0640
   content lazy {
     begin r = IO.popen("openssl genrsa 2048") ;r.read ensure r.close end
@@ -170,7 +177,7 @@ chef_server_options = {
   }
 }
 
-file "/etc/chef-server/chef-server.rb" do
+file "#{node[:chef][:server][:config_dir]}/chef-server.rb" do
   mode 0400
   content(chef_server_options.map do |obj, obj_hash|
       obj_hash.map do |obj_atr, atr_val|
