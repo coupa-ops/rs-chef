@@ -49,8 +49,19 @@ include_recipe "rs-chef::server_monitoring"
 #
 
 execute "Install chef server" do
-  command "yum install -y https://opscode-omnibus-packages.s3.amazonaws.com/el/6/x86_64/chef-server-#{node[:chef][:server][:version]}.el6.x86_64.rpm"
-  not_if { system("yum info chef-server") }
+  command begin
+    chef_server_version = Gem::Version.new(node[:chef][:server][:version]).release
+    url = if chef_server_version >= Gem::Version.new(12)
+      "https://web-dl.packagecloud.io/chef/stable/packages/el/6/chef-server-core-#{chef_server_version}-1.el6.x86_64.rpm"
+    else
+      "https://web-dl.packagecloud.io/chef/stable/packages/el/6/chef-server-#{chef_server_version}-1.el6.x86_64.rpm"
+    end
+    "yum install -y #{url}"
+  end
+  not_if {
+    system('yum info chef-server') || \
+    system('yum info chef-server-core')
+  }
 end
 
 directory "/etc/coupa/patches" do
