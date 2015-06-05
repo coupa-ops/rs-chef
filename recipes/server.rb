@@ -146,6 +146,12 @@ file "/etc/ssl/priv/chef.#{node[:coupa][:serverdomain]}" do
   not_if { node[:chef][:server][:ssl_cert_key].nil? }
 end
 
+erchef_config_key = if Gem::Version.new(node[:chef][:server][:version]).release >= Gem::Version.new(12)
+  'opscode_erchef'
+else
+  'erchef'
+end
+
 chef_server_options = {
   'postgresql' => {
     'enable' => false,
@@ -160,7 +166,7 @@ chef_server_options = {
     'access_key_id' => node[:coupa][:s3][:access_key],
     'secret_access_key' => node[:coupa][:s3][:secret_key],
   },
-  'erchef' => {
+  erchef_config_key => {
     's3_bucket' => bucket_name,
   },
   'nginx' => {
