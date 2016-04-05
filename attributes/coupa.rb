@@ -12,3 +12,6 @@ default[:coupa][:vol][:size] = "50"
 default[:coupa][:dns][:update] = "none"
 default[:coupa][:dns][:id] = "000000"
 default[:coupa][:dns][:provider] = "DNSMadeEasy"
+
+# Stack Release Version
+default[:coupa][:stack_release] = 'es4.4'

@@ -34,6 +34,10 @@ ruby_block "Check ca-certificates" do
   end
 end
 
+file '/etc/stack_release' do
+  content node[:coupa][:stack_release]
+  mode 0444
+end
 
 node.override[:coupa][:role] = node[:chef][:client][:roles].split(",").map{|x| x.strip}.join(",")
 

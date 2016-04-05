@@ -239,6 +239,13 @@ attribute "coupa/vol/encrypted",
   :choice => ["true", "false"],
   :default => "true"
 
+attribute 'coupa/stack_release',
+  :display_name => 'Coupa Stack Release Version',
+  :description => 'Coupa Stack Release Version, example es4.4',
+  :required => 'optional',
+  :recipes => ['rs-chef::client'],
+  :default => 'es4.4'
+
 attribute "coupa/s3/access_key",
   :display_name => "AWS ACCESS KEY for S3",
   :description =>

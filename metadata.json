@@ -352,6 +352,20 @@
       "calculated": false,
       "type": "string"
     },
+    "coupa/stack_release": {
+      "display_name": "Coupa Stack Release Version",
+      "description": "Coupa Stack Release Version, example es4.4",
+      "required": "optional",
+      "recipes": [
+        "rs-chef::client"
+      ],
+      "default": "es4.4",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "coupa/s3/access_key": {
       "display_name": "AWS ACCESS KEY for S3",
       "description": "The aws access key to be used to work with S3 buckets",
@@ -539,12 +553,5 @@
   },
   "version": "15.0.3",
   "source_url": "",
-  "issues_url": "",
-  "privacy": false,
-  "chef_versions": [
-
-  ],
-  "ohai_versions": [
-
-  ]
+  "issues_url": ""
 }
