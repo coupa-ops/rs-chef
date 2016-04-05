@@ -52,7 +52,11 @@ directory "/etc/chef/ohai/hints" do
 end
 
 file "/etc/chef/ohai/hints/ec2.json" do
-  action :create_if_missing
+  action(begin
+    require 'json'
+    s = JSON.parse(::File.read('/var/spool/cloud/meta-data.json'))['services'] || {}
+    s['domain'] == 'amazonaws.com' ? :create : :delete
+  end)
 end
 
 cookbook_file "/tmp/install.sh" do
