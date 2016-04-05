@@ -12,8 +12,9 @@ end
 
 ruby_block "delete_node_and_client" do
   block do
-    cmd_args = node[:chef][:client][:node_name]
-    cmd_args << " --user #{node[:chef][:client][:node_name]}-#{launchtime}"
+    chef_node_name = launchnodename + '-' + launchtime
+    cmd_args = chef_node_name
+    cmd_args << " --user #{chef_node_name}"
     cmd_args << " --key /etc/chef/client.pem"
     cmd_args << " --server-url #{node[:chef][:client][:server_url]}"
     cmd_args << " --yes"
