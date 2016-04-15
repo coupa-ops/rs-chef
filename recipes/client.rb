@@ -105,8 +105,9 @@ end
 execute 'Install newer rubygems' do
   command '/opt/chef/embedded/bin/gem update --system 2.3.0'
   only_if do
-    require 'popen3'
-    current_version = Gem::Version.new(Popen3.capture2e('/opt/chef/embedded/bin/gem --version')[0])
+    require 'open3'
+    current_version = Gem::Version.new(Open3.capture2('/opt/chef/embedded/bin/gem --version')
+                                       .first.strip)
     required_version = Gem::Version.new('2.3.0')
     current_version < required_version
   end
