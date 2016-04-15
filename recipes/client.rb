@@ -103,7 +103,7 @@ end
 #   #871, #872 by Matthew Draper.
 #
 execute 'Install newer rubygems' do
-  command '/opt/chef/embedded/bin/gem update --system 2.3.0'
+  command '/opt/chef/embedded/bin/gem update --no-document --system 2.3.0'
   only_if do
     require 'open3'
     current_version = Gem::Version.new(Open3.capture2('/opt/chef/embedded/bin/gem --version')
