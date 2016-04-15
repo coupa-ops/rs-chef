@@ -90,6 +90,28 @@ execute "install chef client" do
   }
 end
 
+# CloudStack ams03 has some issue with stuck network connections, so we need newer
+# version of rubygems to avoid high network activity during gem installation.
+# It is hard reproducible bug, so this change is simplier than debug it with Cloudstack support.
+#
+# chef-11.18.12 uses rubygems 2.1.11
+# Here is a list of major bug fixes for rubygems 2.3.0:
+# * Restored persistent connections.  Pull request #869 by Aaron Patterson.
+# * Reduced requests when fetching gems with the bundler API.  Pull request #773
+#   by Charlie Somerville.
+# * Reduced dependency prefetching to improve install speed.  Pull requests
+#   #871, #872 by Matthew Draper.
+#
+execute 'Install newer rubygems' do
+  command '/opt/chef/embedded/bin/gem update --system 2.3.0'
+  only_if do
+    require 'popen3'
+    current_version = Gem::Version.new(Popen3.capture2e('/opt/chef/embedded/bin/gem --version')[0])
+    required_version = Gem::Version.new('2.3.0')
+    current_version < required_version
+  end
+end
+
 file "/etc/chef/https_ca_file.crt" do
   content node[:chef][:client][:ca_file]
   mode 0600
