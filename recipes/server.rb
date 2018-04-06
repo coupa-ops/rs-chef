@@ -144,6 +144,7 @@ chef_server_options = {
   },
   'erchef' => {
     's3_bucket' => bucket_name,
+    'db_pool_size' => node[:chef][:server][:db_pool_size]
   },
   'nginx' => {
     'server_name' => "chef.#{node[:coupa][:serverdomain]}",
