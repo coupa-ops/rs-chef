@@ -15,3 +15,6 @@ default[:coupa][:dns][:provider] = "DNSMadeEasy"
 
 # Stack Release Version
 default[:coupa][:stack_release] = 'es4.4'
+
+# PROB-330 - reduce server errors
+default[:chef][:server][:db_pool_size] = 30
