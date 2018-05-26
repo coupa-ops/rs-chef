@@ -551,7 +551,7 @@
     "rs-chef::decomm": "Run decommission role",
     "rs-chef::security-updates": "Apply security updates. Install patches packages."
   },
-  "version": "15.0.5",
+  "version": "15.0.6",
   "source_url": "",
   "issues_url": ""
 }
