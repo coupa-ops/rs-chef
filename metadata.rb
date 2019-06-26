@@ -12,7 +12,7 @@ supports "ubuntu"
 
 depends "collectd", "~> 1.1.0"
 depends "machine_tag", "~> 1.0.6"
-depends "postgresql", "~> 3.4.1"
+depends "postgresql", "~> 3.4.2"
 depends "database", "~> 1.3.8"
 
 recipe "rs-chef::client",
