@@ -13,7 +13,7 @@
   "dependencies": {
     "collectd": "~> 1.1.0",
     "machine_tag": "~> 1.0.6",
-    "postgresql": "~> 3.4.1",
+    "postgresql": "~> 3.4.2",
     "database": "~> 1.3.8"
   },
   "recommendations": {
@@ -551,7 +551,7 @@
     "rs-chef::decomm": "Run decommission role",
     "rs-chef::security-updates": "Apply security updates. Install patches packages."
   },
-  "version": "15.0.6",
+  "version": "15.0.7",
   "source_url": "",
   "issues_url": ""
 }
